@@ -1,4 +1,4 @@
-;;; org-repo-todo.el --- Simple repository todo management with org-mode  -*- lexical-binding: t; -*-
+;;; org-repo-todo.el --- Simple repository todo management with org-mode
 
 ;; Copyright (C) 2014  justin talbott
 
