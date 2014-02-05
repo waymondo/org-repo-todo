@@ -25,7 +25,7 @@
 ;; This is a simple package for capturing and visiting todo items for the
 ;; repository you are currently within. Under the hood it uses `org-capture'
 ;; to provide a popup window for inputting `org-mode' checkboxed todo items
-;; (http://orgmode.org/manual/Checkboxes.html) that get saved to a `TODO.org'
+;; (http://orgmode.org/manual/Checkboxes.html) that get saved to a TODO.org
 ;; file in the root of the repository.
 ;;
 ;; Install is as easy as dropping this file into your load path and setting
@@ -39,13 +39,14 @@
 
 ;;; Code:
 
+(require 'cl)
 (require 'org-capture)
+
+(defvar ort/todo-root)
 
 (autoload 'vc-git-root "vc-git")
 (autoload 'vc-svn-root "vc-svn")
 (autoload 'vc-hg-root "vc-hg")
-
-(defvar ort/todo-root)
 
 (push '("ort" "Org Repo Todo" checkitem (file (ort/todo-file)))
       org-capture-templates)
@@ -53,32 +54,32 @@
 (defun ort/todo-file ()
   (concat ort/todo-root "TODO.org"))
 
-(defun ort/find-root (&optional arg)
+(defun ort/find-root (&optional dotemacs)
   "Find the repo root of the current directory.
-With the prefix argument, find your .emacs.d's root folder."
-  (let ((ort/dir (if arg user-emacs-directory default-directory)))
+With the argument DOTEMACS, find your .emacs.d's root folder."
+  (let ((ort/dir (if dotemacs user-emacs-directory default-directory)))
     (or (vc-git-root ort/dir)
         (vc-svn-root default-directory)
         (vc-hg-root default-directory)
         ort/dir)))
 
 ;;;###autoload
-(defun ort/goto-todos (&optional arg)
+(defun ort/goto-todos (&optional dotemacs)
   "Visit the current repo's TODO.org file.
-With the prefix argument, visit your .emacs.d's TODO.org file."
+With the argument DOTEMACS, visit your .emacs.d's TODO.org file."
   (interactive "P")
-  (let ((ort/todo-root (ort/find-root arg)))
+  (let ((ort/todo-root (ort/find-root dotemacs)))
     (find-file (ort/todo-file))))
 
 ;;;###autoload
-(defun ort/capture-todo (&optional arg)
+(defun ort/capture-todo (&optional dotemacs)
   "Capture a todo for the current repo in an `org-capture' popup window.
-With the prefix argument, capture the todo for your .emacs.d's TODO.org file."
+With the argument DOTEMACS, capture the todo for your .emacs.d's TODO.org file."
   (interactive "P")
   ;; make window split horizontally
   (let ((split-width-threshold nil)
         (split-height-threshold 0)
-        (ort/todo-root (ort/find-root arg)))
+        (ort/todo-root (ort/find-root dotemacs)))
     (org-capture nil "ort")
     (fit-window-to-buffer nil nil 5)))
 
