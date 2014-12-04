@@ -47,6 +47,16 @@
 (defvar ort/todo-root)
 (defvar ort/template)
 
+(defgroup org-repo-todo nil
+  "Simple repository todo management with `org-mode'."
+  :version "0.0.2"
+  :link '(url-link "https://github.com/waymondo/org-repo-todo")
+  :group 'convenience)
+
+(defcustom ort/prefix-arg-directory user-emacs-directory
+  "This is the alternate directory to visit/capture to with the `C-u' prefix."
+  :group 'org-repo-todo)
+
 (autoload 'vc-git-root "vc-git")
 (autoload 'vc-svn-root "vc-svn")
 (autoload 'vc-hg-root "vc-hg")
@@ -63,50 +73,55 @@
       org-capture-templates)
 
 (defun ort/todo-file ()
+  "Find the TODO.org file for the current root directory."
   (concat ort/todo-root "TODO.org"))
 
-(defun ort/find-root (&optional dotemacs)
+(defun ort/find-root (&optional arg-directory)
   "Find the repo root of the current directory.
-With the argument DOTEMACS, find your .emacs.d's root folder."
-  (let ((ort/dir (if dotemacs user-emacs-directory default-directory)))
+With the argument ARG-DIRECTORY, find `ort/prefix-arg-directory'."
+  (let ((ort/dir (if arg-directory ort/prefix-arg-directory default-directory)))
     (or (vc-git-root ort/dir)
-        (vc-svn-root default-directory)
-        (vc-hg-root default-directory)
+        (vc-svn-root ort/dir)
+        (vc-hg-root ort/dir)
         ort/dir)))
 
 ;;;###autoload
-(defun ort/goto-todos (&optional dotemacs)
+(defun ort/goto-todos (&optional arg-directory)
   "Visit the current repo's TODO.org file.
-With the argument DOTEMACS, visit your .emacs.d's TODO.org file."
+With the argument ARG-DIRECTORY, visit `ort/prefix-arg-directory''s
+TODO.org file."
   (interactive "P")
-  (let ((ort/todo-root (ort/find-root dotemacs)))
+  (let ((ort/todo-root (ort/find-root arg-directory)))
     (find-file (ort/todo-file))))
 
-(defun ort/capture (&optional dotemacs)
+(defun ort/capture (&optional arg-directory)
+  "Create a small `org-mode' capture window.
+Items will be captured into the project root.
+If ARG-DIRECTORY is supplied, capture into `ort/prefix-arg-directory'."
   ;; make window split horizontally
   (let ((split-width-threshold nil)
         (split-height-threshold 0)
-        (ort/todo-root (ort/find-root dotemacs)))
+        (ort/todo-root (ort/find-root arg-directory)))
     (org-capture nil ort/template)
     (fit-window-to-buffer nil nil 5)))
 
 ;;;###autoload
-(defun ort/capture-todo (&optional dotemacs)
-  "Capture an org todo for the current repo in an `org-capture'
-popup window. With the argument DOTEMACS, capture the todo for your
-`user-emacs-directory''s TODO.org file."
+(defun ort/capture-todo (&optional arg-directory)
+  "Capture an org todo for the current repo in an `org-capture' popup window.
+Items will be captured into the project root.
+If ARG-DIRECTORY is supplied, capture into `ort/prefix-arg-directory'."
   (interactive "P")
   (let ((ort/template "ort/todo"))
-    (ort/capture dotemacs)))
+    (ort/capture arg-directory)))
 
 ;;;###autoload
-(defun ort/capture-checkitem (&optional dotemacs)
-  "Capture an org checkitem for the current repo in an `org-capture'
-popup window. With the argument DOTEMACS, capture the todo for your
-`user-emacs-directory''s TODO.org file."
+(defun ort/capture-checkitem (&optional arg-directory)
+  "Capture a checkitem for the current repo in an `org-capture' popup window.
+Items will be captured into the project root.
+If ARG-DIRECTORY is supplied, capture into `ort/prefix-arg-directory'."
   (interactive "P")
   (let ((ort/template "ort/checkitem"))
-    (ort/capture dotemacs)))
+    (ort/capture arg-directory)))
 
 (provide 'org-repo-todo)
 ;;; org-repo-todo.el ends here
