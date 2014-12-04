@@ -45,6 +45,7 @@
 (require 'org-capture)
 
 (defvar ort/todo-root)
+(defvar ort/template)
 
 (autoload 'vc-git-root "vc-git")
 (autoload 'vc-svn-root "vc-svn")
@@ -81,29 +82,31 @@ With the argument DOTEMACS, visit your .emacs.d's TODO.org file."
   (let ((ort/todo-root (ort/find-root dotemacs)))
     (find-file (ort/todo-file))))
 
-;;;###autoload
-(defun ort/capture-todo (&optional dotemacs)
-  "Capture a todo for the current repo in an `org-capture' popup window.
-With the argument DOTEMACS, capture the todo for your .emacs.d's TODO.org file."
-  (interactive "P")
+(defun ort/capture (&optional dotemacs)
   ;; make window split horizontally
   (let ((split-width-threshold nil)
         (split-height-threshold 0)
         (ort/todo-root (ort/find-root dotemacs)))
-    (org-capture nil "ort/todo")
+    (org-capture nil ort/template)
     (fit-window-to-buffer nil nil 5)))
 
 ;;;###autoload
-(defun ort/capture-checkitem (&optional dotemacs)
-  "Capture a todo for the current repo in an `org-capture' popup window.
-With the argument DOTEMACS, capture the todo for your .emacs.d's TODO.org file."
+(defun ort/capture-todo (&optional dotemacs)
+  "Capture an org todo for the current repo in an `org-capture'
+popup window. With the argument DOTEMACS, capture the todo for your
+`user-emacs-directory''s TODO.org file."
   (interactive "P")
-  ;; make window split horizontally
-  (let ((split-width-threshold nil)
-        (split-height-threshold 0)
-        (ort/todo-root (ort/find-root dotemacs)))
-    (org-capture nil "ort/checkitem")
-    (fit-window-to-buffer nil nil 5)))
+  (let ((ort/template "ort/todo"))
+    (ort/capture dotemacs)))
+
+;;;###autoload
+(defun ort/capture-checkitem (&optional dotemacs)
+  "Capture an org checkitem for the current repo in an `org-capture'
+popup window. With the argument DOTEMACS, capture the todo for your
+`user-emacs-directory''s TODO.org file."
+  (interactive "P")
+  (let ((ort/template "ort/checkitem"))
+    (ort/capture dotemacs)))
 
 (provide 'org-repo-todo)
 ;;; org-repo-todo.el ends here
