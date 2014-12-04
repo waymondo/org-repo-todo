@@ -5,7 +5,7 @@
 ;; Author: justin talbott <justin@waymondo.com>
 ;; Keywords: convenience
 ;; URL: https://github.com/waymondo/org-repo-todo
-;; Version: 0.0.1
+;; Version: 0.0.2
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,18 +26,16 @@
 ;; the repository you are currently within. Under the hood it uses
 ;; `org-capture' to provide a popup window for inputting `org-mode'
 ;; checkboxed todo items (http://orgmode.org/manual/Checkboxes.html)
-;; or regular *TODO items that get saved to a TODO.org file in the
+;; or regular ** TODO items that get saved to a TODO.org file in the
 ;; root of the repository.
 ;;
 ;; Install is as easy as dropping this file into your load path and setting
 ;; the relevent functions to keybindings of your choice, i.e.:
 ;;
 ;;   (global-set-key (kbd "C-;") 'ort/capture-todo)
-;;   (global-set-key (kbd "C-`") 'ort/capture-checkitem)
-;;   (global-set-key (kbd "C-'") 'ort/goto-todos)
+;;   (global-set-key (kbd "C-'") 'ort/capture-checkitem)
+;;   (global-set-key (kbd "C-`") 'ort/goto-todos)
 ;;
-;; Using the `C-u' command prefix with either of these commands will
-;; capture/visit the todos in your `user-emacs-directory' instead.
 
 ;;; Code:
 
