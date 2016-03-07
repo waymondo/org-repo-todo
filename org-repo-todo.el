@@ -39,7 +39,6 @@
 
 ;;; Code:
 
-(require 'cl)
 (require 'org-capture)
 
 (defvar ort/todo-root)
