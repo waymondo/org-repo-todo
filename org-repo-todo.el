@@ -1,4 +1,4 @@
-;;; org-repo-todo.el --- Simple repository todo management with org-mode
+;;; org-repo-todo.el --- Simple repository todo management with org-mode -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2014  justin talbott
 
@@ -23,7 +23,7 @@
 ;;; Commentary:
 
 ;; This is a simple package for capturing and visiting todo items for
-;; the repository you are currently within. Under the hood it uses
+;; the repository you are currently within.  Under the hood it uses
 ;; `org-capture' to provide a popup window for inputting `org-mode'
 ;; checkboxed todo items (http://orgmode.org/manual/Checkboxes.html)
 ;; or regular ** TODO items that get saved to a TODO.org file in the
@@ -39,7 +39,8 @@
 
 ;;; Code:
 
-(require 'cl)
+(eval-when-compile
+  (require 'cl))
 (require 'org-capture)
 
 (defvar ort/todo-root)
@@ -53,7 +54,8 @@
 
 (defcustom ort/prefix-arg-directory user-emacs-directory
   "This is the alternate directory to visit/capture to with the `C-u' prefix."
-  :group 'org-repo-todo)
+  :group 'org-repo-todo
+  :type 'directory)
 
 (autoload 'vc-git-root "vc-git")
 (autoload 'vc-svn-root "vc-svn")
