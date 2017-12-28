@@ -1,11 +1,11 @@
 ;;; org-repo-todo.el --- Simple repository todo management with org-mode -*- lexical-binding: t -*-
 
-;; Copyright (C) 2014  justin talbott
+;; Copyright (C) 2014-2017 justin talbott
 
 ;; Author: justin talbott <justin@waymondo.com>
 ;; Keywords: convenience
 ;; URL: https://github.com/waymondo/org-repo-todo
-;; Version: 0.0.2
+;; Version: 0.0.3
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
