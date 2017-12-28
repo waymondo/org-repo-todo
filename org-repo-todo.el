@@ -63,13 +63,13 @@
 
 (push '("ort/todo" "Org Repo Todo"
         entry
-        (file+headline (ort/todo-file) "Todos")
+        (file+headline "TODO.org" "Todos")
         "* TODO  %?\t\t\t%T\n %i\n Link: %l\n")
       org-capture-templates)
 
 (push '("ort/checkitem" "Org Repo Checklist Item"
         checkitem
-        (file+headline (ort/todo-file) "Checklist"))
+        (file+headline "TODO.org" "Checklist"))
       org-capture-templates)
 
 (defun ort/todo-file ()
@@ -99,9 +99,10 @@ TODO.org file."
 Items will be captured into the project root.
 If ARG-DIRECTORY is supplied, capture into `ort/prefix-arg-directory'."
   ;; make window split horizontally
-  (let ((split-width-threshold nil)
-        (split-height-threshold 0)
-        (ort/todo-root (ort/find-root arg-directory)))
+  (let* ((split-width-threshold nil)
+         (split-height-threshold 0)
+         (ort/todo-root (ort/find-root arg-directory))
+         (org-directory ort/todo-root))
     (org-capture nil ort/template)
     (fit-window-to-buffer nil nil 5)))
 
