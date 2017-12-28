@@ -39,8 +39,6 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
 (require 'org-capture)
 
 (defvar ort/todo-root)
